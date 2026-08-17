@@ -18,12 +18,12 @@ The plan assumes one developer working for fun. Short measured loops come before
 | Runtime | Rust 2024, Cargo workspace | Capture, scheduling, geometry, estimator, retargeting, VMC, recording |
 | Inference | ONNX Runtime through `ort` | Concrete sessions first. Provider and device come from the model manifest and configuration |
 | Model, export, and evaluation | Python managed by `uv` | Never required by ordinary end users |
-| Setup UI | Tauri and TypeScript | Typed in-process commands. No pose round-trip through JSON |
+| Setup UI | `iced` | In-process Rust calls. The engine owns session state. The view holds a read-only snapshot |
 | Windows capture | Media Foundation | Record actual mode, timestamp behavior, and camera controls |
 | Record and replay | MCAP | Timestamped schemas for frames, observations, state, status, residuals, and timing |
 | Avatar | VRM 0.x and 1.0 import | Engine-owned canonical skeleton and explicit version mapping |
 | Live output | VMC over OSC and UDP | Final retargeted pose only |
-| Task entry point | `just` | Wrap Cargo, `uv`, `pnpm`, tests, export, and benchmarks |
+| Task entry point | `just` | Wrap Cargo, `uv`, tests, export, and benchmarks |
 
 Windows is first. Linux and V4L2 follow only after the Windows live slice works on both reference GPU classes.
 
@@ -42,7 +42,7 @@ Provider-specific model files or precision are allowed when the manifest records
 
 ### 1.2 Dependency policy
 
-- Pin Rust, JavaScript, Python, ONNX Runtime, model, and schema versions used for a release.
+- Pin Rust, Python, ONNX Runtime, model, and schema versions used for a release.
 - Commit lockfiles and model manifests. Do not commit multi-gigabyte model weights to Git.
 - A release bundle may place verified weights beside the application when their terms permit redistribution.
 - Every model file is hash-checked before session creation.
@@ -60,9 +60,8 @@ senrigan/
 │   ├── engine/      calibration, analytical estimator, contacts, lifecycle
 │   ├── perception/  preprocessing, ORT sessions, model adapters, coverage
 │   ├── avatar/      VRM import, retargeting, expression mapping, VMC encoding
-│   └── app/         capture, scheduler, MCAP, Tauri commands, binaries
+│   └── app/         capture, scheduler, MCAP, setup UI, binaries
 ├── ml/              export, parity, training, evaluation, data tools
-├── ui/              Tauri web frontend
 ├── models/          manifests, notices, and ignored weight files
 ├── testdata/        small consented replays and synthetic fixtures
 ├── benchmarks/      expected configurations and machine-readable reports
@@ -72,13 +71,17 @@ senrigan/
 
 Dependency direction is `types` ← (`engine`, `perception`, `avatar`) ← `app`. `avatar` may use shared math and contracts from `types`. It does not call capture or UI. The application composes concrete implementations in one process.
 
+The setup UI is a module inside `app`. Move it into its own crate only after build times demonstrate a useful boundary.
+
 Split capture, outputs, geometry, grounding, or temporal logic into new crates only after dependencies or build times demonstrate a useful boundary. Module boundaries inside a crate are enough before then.
 
 ## 3. Application and process boundary
 
-The Tauri application embeds the engine. Typed commands cover camera selection, model and provider selection, avatar import, calibration, session control, recording, and status. Bounded events or shared snapshots carry UI-rate preview and status data.
+The `iced` application embeds the engine in one process. The UI calls the engine through ordinary Rust functions. Those calls cover camera selection, model and provider selection, avatar import, calibration, session control, recording, and status.
 
-Rust owns the output-clock pose stream. The web view receives a coalesced snapshot. The pose stream never travels from Rust to TypeScript and back to an output adapter. A later `wgpu` preview may render in Rust. It must not pass through TypeScript.
+The engine owns session state. The `iced` model holds a view snapshot only. A message updates what the user sees. A message never becomes the authoritative value for root, pose, contact, calibration, or lifecycle. When the view and the engine disagree, the engine is correct.
+
+Rust owns the output-clock pose stream. The UI reads a coalesced snapshot at UI rate. The UI never blocks the output clock. The UI never sits between the estimator and an output adapter. A later `wgpu` preview may render through an `iced` shader widget. It must use the same `RetargetResult` as VMC.
 
 The same composition can expose a headless binary for replay, benchmarking, and VMC output. It is not a daemon required by the desktop UI.
 

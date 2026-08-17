@@ -1,0 +1,13 @@
+[package]
+name = "senrigan-app"
+description = "Senrigan application composition"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+senrigan-avatar = { path = "../avatar" }
+senrigan-engine = { path = "../engine" }
+senrigan-perception = { path = "../perception" }
+senrigan-types.workspace = true

@@ -1,6 +1,6 @@
 # Senrigan
 
-Senrigan is a local one-camera VTuber tracker. It is in design. There is no code yet.
+Senrigan is a local one-camera VTuber tracker. The workspace and shared contracts are implemented. Capture, inference, and avatar output are not implemented yet.
 
 A user imports a Virtual Reality Model (VRM), completes a short board-free setup, and sends live full-body motion through Virtual Motion Capture (VMC). No trackers, base stations, second camera, cloud service, or subscription are required. The project is a hobby and research-engineering effort. It is not a startup plan.
 
@@ -37,13 +37,26 @@ Reference GPU classes are an Intel Arc B580 desktop and an NVIDIA RTX 4060 deskt
 | [`overall_ideal.md`](misc-planning/overall_ideal.md) | Glossary, product behavior, workflows, success criteria, limitations, privacy, and release posture |
 | [`engine_concept.md`](misc-planning/engine_concept.md) | Engine data flow, state, contracts, estimation, grounding, and retargeting |
 | [`file_architecture.md`](misc-planning/file_architecture.md) | Stack, repository layout, owned numbers, phases, hardware gates, and testing |
+| [`implementation_landings.md`](misc-planning/implementation_landings.md) | Mergeable landings toward the first useful release |
 | [`prior_art.md`](misc-planning/prior_art.md) | Research precedents, replacement class, and out-of-scope products |
-| [`AGENTS.md`](AGENTS.md) | Prose rules for maintained documents |
+| [`AGENTS.md`](AGENTS.md) | Contributor rules for builds, code, tests, reviews, prose, and repository boundaries |
 | [`LICENSE`](LICENSE) | GNU General Public License version 3 terms for Senrigan work |
 
 ## Stack intent
 
-Rust runtime, Open Neural Network Exchange (ONNX) Runtime through `ort`, Python for model work and evaluation, Tauri for the setup application, the MCAP recording container for record and replay, VRM as the first avatar format, and VMC as the first live output protocol.
+Rust runtime, Open Neural Network Exchange (ONNX) Runtime through `ort`, Python for model work and evaluation, `iced` for the setup application, the MCAP recording container for record and replay, VRM as the first avatar format, and VMC as the first live output protocol.
+
+## Development
+
+Run all workspace checks with Cargo:
+
+```sh
+cargo fmt --all -- --check
+cargo test --workspace --all-targets
+cargo clippy --workspace --all-targets -- -D warnings
+```
+
+If `just` is installed, run the same checks with `just ci`.
 
 ## License
 

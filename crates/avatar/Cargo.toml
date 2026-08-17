@@ -1,0 +1,10 @@
+[package]
+name = "senrigan-avatar"
+description = "Avatar import and retargeting for Senrigan"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+senrigan-types.workspace = true

@@ -1,0 +1,25 @@
+# Rust build output
+/target/
+
+# Editor and operating-system files
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local model artifacts
+/models/**/model.onnx
+/models/**/*.onnx.data
+/models/**/*.bin
+/models/**/*.safetensors
+
+# Local recordings and reports
+/*.mcap
+/testdata/private/
+/benchmarks/local/

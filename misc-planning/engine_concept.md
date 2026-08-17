@@ -474,9 +474,9 @@ Named reference receivers live in `file_architecture.md`.
 
 ### 9.4 Preview path
 
-Rust owns the output-clock pose. The Tauri web view receives a coalesced snapshot or bounded event at UI rate. The pose never travels through TypeScript into an output adapter.
+Rust owns the output-clock pose. The `iced` view receives a coalesced snapshot at UI rate. The view never sits between the estimator and an output adapter.
 
-A later in-process `wgpu` preview may render in Rust. It must use the same `RetargetResult` as VMC.
+A later in-process `wgpu` preview may render through an `iced` shader widget. It must use the same `RetargetResult` as VMC.
 
 ## 10. Scheduling, concurrency, and devices
 
