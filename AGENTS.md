@@ -20,3 +20,7 @@ Apply these ASD-STE100-style rules to all maintained documents:
 - Link to the document that owns a command or capability instead of repeating it.
 - Do not restate code-owned values such as defaults, thresholds, or counts. State
   the command or link to the source.
+- Use the glossary names in `misc-planning/overall_ideal.md`. Do not rotate
+  performer, site, spatial model, first useful release, or rotation and IK
+  baseline.
+- Put new numeric gates only in `misc-planning/file_architecture.md`.
