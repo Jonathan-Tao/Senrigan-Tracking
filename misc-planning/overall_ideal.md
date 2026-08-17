@@ -211,7 +211,7 @@ The application aims to offer a convenient bundle. Model artifacts retain their 
 
 | Artifact | Current planning status | Release handling |
 |---|---|---|
-| Senrigan code | GPLv3 intent | Add the actual repository license before distributing code |
+| Senrigan source code and repository documentation | GPL-3.0-only | The repository [`LICENSE`](../LICENSE) applies unless a file states different terms |
 | ONNX Runtime | MIT | Bundle notices with the pinned runtime |
 | `ort` | MIT and Apache-2.0 | Pin and record the selected version |
 | SAM 3D Body / MHR | Custom SAM license for body, feet, and hands | Lead technical candidate, subject to exact redistribution review before bundling |

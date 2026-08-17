@@ -39,9 +39,16 @@ Reference GPU classes are an Intel Arc B580 desktop and an NVIDIA RTX 4060 deskt
 | [`file_architecture.md`](misc-planning/file_architecture.md) | Stack, repository layout, owned numbers, phases, hardware gates, and testing |
 | [`prior_art.md`](misc-planning/prior_art.md) | Research precedents, replacement class, and out-of-scope products |
 | [`AGENTS.md`](AGENTS.md) | Prose rules for maintained documents |
+| [`LICENSE`](LICENSE) | GNU General Public License version 3 terms for Senrigan work |
 
 ## Stack intent
 
 Rust runtime, Open Neural Network Exchange (ONNX) Runtime through `ort`, Python for model work and evaluation, Tauri for the setup application, the MCAP recording container for record and replay, VRM as the first avatar format, and VMC as the first live output protocol.
 
-Code is intended for GPLv3. Models remain separately licensed artifacts. Every bundled or optional configuration must identify its checkpoint, source, terms, and restrictions. The project may use research-only models for local experiments without pretending that makes them redistributable.
+## License
+
+Copyright (C) 2026 Senrigan contributors.
+
+Unless a file states different terms, the original Senrigan source code and repository documentation are free software under the [GNU General Public License version 3 only](LICENSE), identified by the SPDX expression `GPL-3.0-only`.
+
+This license does not relicense model weights, datasets, avatar files, or third-party code and assets. Those artifacts keep their own terms. Every bundled or optional model configuration must identify its checkpoint, source, terms, and restrictions. A research-only artifact can be used for a permitted local experiment. It cannot enter a public bundle unless its terms permit distribution and the intended use.
